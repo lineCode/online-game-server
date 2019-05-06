@@ -1,0 +1,85 @@
+<div class="block">
+    <!-- Basic Form Elements Title -->
+    <div class="block-title">
+        <h2>새 판본 올리기</h2>
+    </div>
+    <!-- END Form Elements Title -->
+
+    <!-- Basic Form Elements Content -->
+    <form action="#" method="post" class="form-horizontal form-bordered" onsubmit="return false;">
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="release_id">판본 ID</label>
+            <div class="col-md-9">
+                <input type="text" name="release_id" class="form-control" placeholder="판본ID(수값으로 입력해야 합니다.)" ng-model="release.id">
+                <span class="help-block">판본ID</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="release_name">판본 이름</label>
+            <div class="col-md-9">
+                <input type="text" name="release_name" class="form-control" placeholder="판본이름" ng-model="release.name">
+                <span class="help-block">판본이름</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="path">경로</label>
+            <div class="col-md-9">
+                <input type="text" name="physical_path" class="form-control" placeholder="새 판본이 있는 경로를 지정해야 합니다." ng-model="release.physical_path">
+                <span class="help-block">경로</span>
+            </div>
+        </div><!--
+        <div class="form-group">
+            <label class="col-md-3 control-label" for="path">Logical Path</label>
+            <div class="col-md-9">
+                <input type="text" name="logical_path" class="form-control" placeholder="Logical Path" ng-model="release.logical_path">
+                <span class="help-block">Logical Path</span>
+            </div>
+        </div>-->
+        <div class="form-group form-actions">
+            <div class="col-md-9 col-md-offset-3">
+                <span class="btn btn-sm btn-primary" ng-click="add_release()"><i class="fa fa-angle-right"></i> 올리적재</span>
+            </div>
+        </div>
+    </form>
+    <!-- END Basic Form Elements Content -->
+</div>
+<div class="block">
+            <!-- Products Title -->
+    <div class="block-title">
+        <h2><strong>판본목록</strong></h2>
+    </div>
+    <!-- END Products Title -->
+
+    <!-- Products Content -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-vcenter">
+            <thead>
+                <tr>
+                    <th class="text-center" style="width: 100px;">판본ID</th>
+                    <th class="text-center">판본이름</th>
+                    <th>활성화</th>
+                    <th class="text-center">
+                        파일개수
+                    </th>
+                    <th class="text-center">활성화하기</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="release in releases" ng-if="releases.length > 0">
+                    <td class="text-center">{{ release.id }}</td>
+                    <td class="text-center">{{ release.name }}</td>
+                    <td >{{ release.active }}</td>
+                    <td class="text-center">{{release.file_count}}</td>
+                    <td class="text-center"><!--<span class="release.active==0?'btn_active':'btn_deactive' btn btn-xs btn-info" ng-click="set_active(release.id, $index)">Active</span>-->
+                        <button ng-if="release.active == 0" ng-click="set_active(release.id, $index, 1)">활성화</button>
+                        <button ng-if="release.active != 0" ng-click="set_active(release.id, $index, 0)">비활성화</button>
+                    </td>
+                </tr>
+                <tr ng-if="releases == null || releases.length == 0">
+                    <td colspan="3" class="text-center">올리적재된 판본이 없습니다.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- END Products Content -->
+</div>

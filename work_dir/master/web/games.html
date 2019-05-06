@@ -1,0 +1,169 @@
+<div class="row" >
+	<div class="col-md-4">
+        <div class="block">
+        <!-- Products Title -->
+            <div class="block-title">
+                <div class="block-options pull-right">
+                    <a href="javascript:void(0)" ng-click="show_create()" class="btn btn-sm btn-default" data-toggle="tooltip" title="" data-original-title="새로추가"><i class="gi gi-plus"></i> 새로 창조</a>
+                </div>
+                <h2><strong>경기지형</strong></h2>
+            </div>
+            <!-- END Products Title -->
+
+            <!-- Products Content -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-vcenter">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 100px;">번호</th>
+                            <th>지형이름</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="level in levels" ng-if="levels.length > 0">
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td >{{ level.name }}</td>
+                        </tr>
+                        <tr ng-if="levels == null || levels.length == 0">
+                            <td colspan="3" class="text-center">등록된 지형이 없습니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- END Products Content -->
+        </div>   
+    </div>
+    <div class="col-md-8">
+        <div class="block">
+            <!-- Products Title -->
+            <div class="block-title">
+                <h2><strong>진행중인 경기들</strong></h2>
+            </div>
+            <!-- END Products Title -->
+
+            <!-- Products Content -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-vcenter">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 100px;">식별자</th>
+                            <th class="text-center">포구</th>
+                            <th>지형이름</th>
+                            <th class="text-center">
+                                상태
+                            </th>
+                            <th class="text-center" style="width: 200px;">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="playing in playings" ng-if="playings.length > 0">
+                            <td class="text-center">{{ playing.id }}</td>
+                            <td class="text-center">{{ playing.port }}</td>
+                            <td >{{ playing.level_name }}</td>
+                            <td class="text-center">
+                                <span class="label " ng-class="playing.status=='running'?'label-success':'label-danger'">{{ playing.status }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="btn btn-xs btn-info" ng-click="view_console(playing.id)">기록보기</span>
+                                <span class="btn btn-xs btn-danger" ng-click="terminate(playing.id, $index)">끝내기</span>
+                            </td>
+                        </tr>
+                        <tr ng-if="playings == null || playings.length == 0">
+                            <td colspan="3" class="text-center">진행중인 경기가 없습니다.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- END Products Content -->
+        </div>
+    </div>
+</div>
+
+
+<div id="create_modal" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">경기창조</h4>
+            </div>
+            <div class="modal-body form">
+                <form action="#" class="form-horizontal form-row-seperated">
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">경기이름 </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="new_game.game_name" value="경기1" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 server_name">지형이름 </label>
+                        <div class="col-md-4">
+                            <!--<input class="form-control" type="text" ng-model="new_game.level"/>-->
+                            <select class="form-control" ng-model="new_game.level">
+                                <option ng-repeat="level in levels" value="{{ level.name}}">{{ level.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">경기방식 </label>
+                        <div class="col-md-4">
+                            <!--<input class="form-control" type="text" ng-model="new_game.mode"/>-->
+                            <select class="form-control" ng-model="new_game.mode">
+                                <option value="1">실시간경기</option>
+                                <option value="2">전문가경기</option>
+                                <!--<option value="3">보석찾기경기</option>-->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--          Start Date          -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">시작날자 </label>
+                        <div class="col-md-4">
+                            <input type="date" class="form-control" ng-model="new_game.start_date" value="{{curDate}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">시작시간 </label>
+                        <div class="col-md-4">
+                            <input type="time" class="form-control" ng-model="new_game.start_time" value="{{curTime}}">
+                        </div>
+                    </div>
+                    <!--          End Date          -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">완료날자 </label>
+                        <div class="col-md-4">
+                            <input type="date" class="form-control" ng-model="new_game.end_date" value="{{curDate}}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4 game_mode">완료시간 </label>
+                        <div class="col-md-4">
+                            <input type="time" class="form-control" ng-model="new_game.end_time" value="{{curTime}}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" ng-click="create_level()"><i class="fa fa-check"></i>보관</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="console_modal" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">경기 기록 - {{ console.id }}</h4>
+            </div>
+            <div class="modal-body form">
+                <p>{{ console.console_output }}</p>          
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>                
+            </div>
+        </div>
+    </div>
+</div>
